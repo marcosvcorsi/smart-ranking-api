@@ -11,7 +11,7 @@ describe('PlayersController', () => {
 
   beforeEach(async () => {
     const mockService = {
-      createOrUpdatePlayer: jest.fn()
+      create: jest.fn()
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -37,16 +37,16 @@ describe('PlayersController', () => {
   });
 
   describe('createOrUpdatePlayer', () => {
-    it('should call PlayersService createOrUpdatePlayer with correct values', async () => {
-      await controller.createOrUpdatePlayer(mockCreatePlayer);
+    it('should call PlayersService create with correct values', async () => {
+      await controller.create(mockCreatePlayer);
 
-      expect(service.createOrUpdatePlayer).toBeCalledWith(mockCreatePlayer);
+      expect(service.create).toBeCalledWith(mockCreatePlayer);
     })
 
     it('should throw if PlayersService createOrUpdatePlayer throws', async () => {
-      jest.spyOn(service, 'createOrUpdatePlayer').mockRejectedValue(new BadRequestException());
+      jest.spyOn(service, 'create').mockRejectedValue(new BadRequestException());
 
-      await expect(controller.createOrUpdatePlayer(mockCreatePlayer)).rejects.toThrow();
+      await expect(controller.create(mockCreatePlayer)).rejects.toThrow();
     })
   })
 });

@@ -1,68 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
-import { Player } from '../models/player.model';
-
-import { v4 as uuid } from 'uuid';
+import { Player } from '../models/player.schema';
+import { PlayersRepository } from '../repositories/players.repository';
 
 @Injectable()
 export class PlayersService {
-  private players: Player[] = [];
 
-  async createOrUpdatePlayer(createPlayerDto: CreatePlayerDto): Promise<void> {
-    const {email, name} = createPlayerDto;
+  constructor(private readonly playersRepository: PlayersRepository) {}
 
-    const findPlayer = this.players.find(p => p.email === email);
-
-    if (!findPlayer) {
-      this.create(createPlayerDto);
-    } else  {
-      this.update(findPlayer._id, name);
-    }
+  async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
+    return this.playersRepository.create(createPlayerDto);
   }
 
   async findAll(): Promise<Player[]> {
-    return this.players;
+    return this.playersRepository.findAll();
   }
 
   async findByEmail(email: string): Promise<Player> {
-    const player = this.players.find(p => p.email === email);
-
-    if(!player) {
-      throw new NotFoundException('Player not found')
-    }
-
-    return player;
+    return this.playersRepository.findByEmail(email);
   }
 
   async deleteByEmail(email: string) {
-    const player = this.players.find(p => p.email === email);
-
-    if(!player) {
-      throw new NotFoundException('Player not found')
-    }
-
-    this.players = this.players.filter(p => p._id !== player._id);
+    return this.playersRepository.delete(email);
   }
 
-  create(createPlayerDto: CreatePlayerDto): void {
-    const player: Player = {
-      _id: uuid(),
-      ranking: 'any',
-      rankingPosition: 1,
-      imgUrl: 'any',
-      ...createPlayerDto,
-    }
-
-    this.players.push(player);
-  }
-
-  update(id: string, name: string) {
-    this.players = this.players.map(player => {
-      if(player._id === id) {
-        player.name = name;
-      }
-
-      return player;
-    })
+  async update(email: string, createPlayerDto: CreatePlayerDto) {
+    return this.playersRepository.update(email, createPlayerDto);
   }
 }

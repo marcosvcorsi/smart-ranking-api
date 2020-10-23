@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
-import { Player } from '../models/player.model';
+import { Player } from '../models/player.schema';
 import { PlayersService } from '../services/players.service';
 
 @Controller('api/v1/players')
@@ -19,8 +19,8 @@ export class PlayersController {
   }
   
   @Post()
-  async createOrUpdatePlayer(@Body() createPlayerDto: CreatePlayerDto) {
-    return this.playersService.createOrUpdatePlayer(createPlayerDto);
+  async create(@Body() createPlayerDto: CreatePlayerDto) {
+    return this.playersService.create(createPlayerDto);
   }
 
   @Delete(':email')
