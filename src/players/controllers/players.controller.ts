@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
 import { Player } from '../models/player.model';
 import { PlayersService } from '../services/players.service';
