@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
 import { Player } from '../models/player.schema';
 import { PlayersService } from '../services/players.service';
@@ -9,6 +9,7 @@ export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
   @Get()
+
   async findAll(): Promise<Player[]> {
     return this.playersService.findAll();
   }
@@ -19,6 +20,7 @@ export class PlayersController {
   }
   
   @Post()
+  @UsePipes(ValidationPipe)
   async create(@Body() createPlayerDto: CreatePlayerDto) {
     return this.playersService.create(createPlayerDto);
   }
