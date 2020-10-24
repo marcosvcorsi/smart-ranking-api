@@ -26,7 +26,7 @@ export class PlayersController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() createPlayerDto: CreatePlayerDto): Promise<Player> {
-    return this.update(id, createPlayerDto);
+    return this.playersService.update(id, createPlayerDto);
   }
 
   @Delete(':id')

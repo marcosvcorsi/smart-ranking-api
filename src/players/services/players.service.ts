@@ -9,7 +9,7 @@ export class PlayersService {
   constructor(private readonly playersRepository: PlayersRepository) {}
 
   async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
-    const findByEmail = this.playersRepository.findByEmail(createPlayerDto.email);
+    const findByEmail = await this.playersRepository.findByEmail(createPlayerDto.email);
 
     if (findByEmail) {
       throw new BadRequestException('e-mail already in use');
@@ -23,7 +23,7 @@ export class PlayersService {
   }
 
   async findById(id: string): Promise<Player> {
-    const player = this.playersRepository.findById(id);
+    const player = await this.playersRepository.findById(id);
 
     if (!player) {
       throw new NotFoundException();
@@ -42,7 +42,7 @@ export class PlayersService {
     return this.playersRepository.delete(id);
   }
 
-  async update(email: string, createPlayerDto: CreatePlayerDto) {
-    return this.playersRepository.update(email, createPlayerDto);
+  async update(id: string, createPlayerDto: CreatePlayerDto) {
+    return this.playersRepository.update(id, createPlayerDto);
   }
 }

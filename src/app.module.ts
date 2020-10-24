@@ -13,7 +13,7 @@ import { PlayersModule } from './players/players.module';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       useCreateIndex: true,
-      useFindAndModify: true,
+      useFindAndModify: false,
     }),
     PlayersModule
   ],

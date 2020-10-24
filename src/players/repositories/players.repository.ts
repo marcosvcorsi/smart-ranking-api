@@ -29,9 +29,9 @@ export class PlayersRepository {
     return player;
   }
 
-  async update(email: string, createPlayerDto: CreatePlayerDto): Promise<Player> {
+  async update(id: string, createPlayerDto: CreatePlayerDto): Promise<Player> {
     return this.playerModel.findOneAndUpdate({
-      email,
+      _id: id,
     }, {
       $set: createPlayerDto
     })
