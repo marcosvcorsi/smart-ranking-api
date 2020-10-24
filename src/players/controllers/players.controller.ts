@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
+import { UpdatePlayerDto } from '../dtos/update-player.dto';
 import { Player } from '../models/player.schema';
 import { PlayersService } from '../services/players.service';
 
@@ -25,8 +26,8 @@ export class PlayersController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() createPlayerDto: CreatePlayerDto): Promise<Player> {
-    return this.playersService.update(id, createPlayerDto);
+  async update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto): Promise<Player> {
+    return this.playersService.update(id, updatePlayerDto);
   }
 
   @Delete(':id')

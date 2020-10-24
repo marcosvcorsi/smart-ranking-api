@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
+import { UpdatePlayerDto } from '../dtos/update-player.dto';
 import { Player } from '../models/player.schema';
 import { PlayersRepository } from '../repositories/players.repository';
 
@@ -42,7 +43,7 @@ export class PlayersService {
     return this.playersRepository.delete(id);
   }
 
-  async update(id: string, createPlayerDto: CreatePlayerDto) {
-    return this.playersRepository.update(id, createPlayerDto);
+  async update(id: string, updatePlayerDto: UpdatePlayerDto) {
+    return this.playersRepository.update(id, updatePlayerDto);
   }
 }

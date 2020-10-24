@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreatePlayerDto } from "../dtos/create-player.dto";
+import { UpdatePlayerDto } from "../dtos/update-player.dto";
 import { Player, PlayerDocument } from "../models/player.schema";
 
 @Injectable()
@@ -29,11 +30,11 @@ export class PlayersRepository {
     return player;
   }
 
-  async update(id: string, createPlayerDto: CreatePlayerDto): Promise<Player> {
+  async update(id: string, updatePlayerDto: UpdatePlayerDto): Promise<Player> {
     return this.playerModel.findOneAndUpdate({
       _id: id,
     }, {
-      $set: createPlayerDto
+      $set: updatePlayerDto
     })
   }
 
