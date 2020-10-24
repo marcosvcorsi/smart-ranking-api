@@ -11,6 +11,7 @@ describe('PlayersService', () => {
   beforeEach(async () => {
     const mockRepository = {
       create: jest.fn(),
+      findByEmail: jest.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -30,7 +31,7 @@ describe('PlayersService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('createOrUpdatePlayer()', () => {
+  describe('create()', () => {
     it('should call create with correct values', async () => {
       const createSpy = jest.spyOn(service, 'create');
 
