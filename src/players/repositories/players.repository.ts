@@ -13,10 +13,8 @@ export class PlayersRepository {
     return this.playerModel.find(); 
   }
 
-  async findByEmail(email: string): Promise<Player> {
-    return this.playerModel.findOne({
-      email
-    })
+  async findById(id: string): Promise<Player> {
+    return this.playerModel.findById(id);
   }
 
   async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
@@ -35,9 +33,9 @@ export class PlayersRepository {
     })
   }
 
-  async delete(email: string): Promise<any> {
+  async delete(id: string): Promise<any> {
     return this.playerModel.deleteOne({
-      email
+      _id: id
     })
   }
 }

@@ -16,12 +16,12 @@ export class PlayersService {
     return this.playersRepository.findAll();
   }
 
-  async findByEmail(email: string): Promise<Player> {
-    return this.playersRepository.findByEmail(email);
+  async findById(id: string): Promise<Player> {
+    return this.playersRepository.findById(id);
   }
 
-  async deleteByEmail(email: string) {
-    return this.playersRepository.delete(email);
+  async deleteById(id: string) {
+    return this.playersRepository.delete(id);
   }
 
   async update(email: string, createPlayerDto: CreatePlayerDto) {

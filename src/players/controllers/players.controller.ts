@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
 import { Player } from '../models/player.schema';
-import { PlayersValidationParametersPipe } from '../pipes/players-validation-parameters.pipe';
 import { PlayersService } from '../services/players.service';
 
 @Controller('api/v1/players')
@@ -14,9 +13,9 @@ export class PlayersController {
     return this.playersService.findAll();
   }
 
-  @Get(':email')
-  async findByEmail(@Param('email', PlayersValidationParametersPipe) email: string): Promise<Player> {
-    return this.playersService.findByEmail(email);
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<Player> {
+    return this.playersService.findById(id);
   }
   
   @Post()
@@ -25,9 +24,9 @@ export class PlayersController {
     return this.playersService.create(createPlayerDto);
   }
 
-  @Delete(':email')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('email', PlayersValidationParametersPipe) email: string): Promise<void> {
-    return this.playersService.deleteByEmail(email);
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.playersService.deleteById(id);
   }
 }
