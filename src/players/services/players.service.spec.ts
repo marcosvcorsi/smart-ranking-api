@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreatePlayerDto } from '../dtos/create-player.dto';
 import { UpdatePlayerDto } from '../dtos/update-player.dto';
@@ -19,6 +19,7 @@ describe('PlayersService', () => {
       findByEmail: jest.fn(),
       update: jest.fn(),
       findAll: jest.fn(),
+      findById: jest.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -125,6 +126,36 @@ describe('PlayersService', () => {
       const response = await service.findAll();
 
       expect(response).toEqual([mockPlayer]);
+    })
+  })
+
+  describe('findById()', () => {
+    it('should call findById with correct value', async () => {
+      const findSpy = jest.spyOn(repository, 'findById');
+
+      findSpy.mockReturnValueOnce(Promise.resolve(mockPlayer));
+
+      await service.findById('anyid');
+
+      expect(findSpy).toHaveBeenCalledWith('anyid');
+    })
+
+    it('should throw if findById returns null', async () => {
+      await expect(service.findById('anyid')).rejects.toBeInstanceOf(NotFoundException);
+    })
+
+    it('should throw if findById throws', async () => {
+      jest.spyOn(repository, 'findById').mockRejectedValueOnce(new Error())
+
+      await expect(service.findById('anyid')).rejects.toThrow(new Error());
+    })
+
+    it('should return a player on success', async () => {
+      jest.spyOn(repository, 'findById').mockReturnValueOnce(Promise.resolve(mockPlayer))
+
+      const response = await service.findById('anyid');
+
+      expect(response).toEqual(mockPlayer);
     })
   })
 });
