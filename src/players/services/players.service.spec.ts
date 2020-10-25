@@ -17,7 +17,8 @@ describe('PlayersService', () => {
     const mockRepository = {
       create: jest.fn(),
       findByEmail: jest.fn(),
-      update: jest.fn()
+      update: jest.fn(),
+      findAll: jest.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -79,7 +80,7 @@ describe('PlayersService', () => {
     })
   })
 
-  describe('update', () => {
+  describe('update()', () => {
     it('should call update with correct values', async () => {
       const updateSpy = jest.spyOn(repository, 'update');
 
@@ -100,6 +101,30 @@ describe('PlayersService', () => {
       const response = await service.update('anyid', mockCreatePlayer);
 
       expect(response).toEqual(mockPlayer);
+    })
+  })
+
+  describe('findAll()', () => {
+    it('should call findAll', async () => {
+      const findAllSpy = jest.spyOn(repository, 'findAll');
+
+      await service.findAll();
+
+      expect(findAllSpy).toHaveBeenCalled()
+    })
+
+    it('should throw if findAll throws', async () => {
+      jest.spyOn(repository, 'findAll').mockRejectedValueOnce(new Error())
+
+      await expect(service.findAll()).rejects.toThrow(new Error());
+    })
+
+    it('should return players on success', async () => {
+      jest.spyOn(repository, 'findAll').mockReturnValueOnce(Promise.resolve([mockPlayer]))
+
+      const response = await service.findAll();
+
+      expect(response).toEqual([mockPlayer]);
     })
   })
 });
