@@ -20,6 +20,7 @@ describe('PlayersService', () => {
       update: jest.fn(),
       findAll: jest.fn(),
       findById: jest.fn(),
+      delete: jest.fn(),
     }
 
     const module: TestingModule = await Test.createTestingModule({
@@ -156,6 +157,46 @@ describe('PlayersService', () => {
       const response = await service.findById('anyid');
 
       expect(response).toEqual(mockPlayer);
+    })
+  })
+
+  describe('deleteById()', () => {
+    it('should call findById with correct value', async () => {
+      const findSpy = jest.spyOn(repository, 'findById');
+
+      findSpy.mockReturnValueOnce(Promise.resolve(mockPlayer));
+
+      await service.findById('anyid');
+
+      expect(findSpy).toHaveBeenCalledWith('anyid');
+    })
+
+    it('should throw if findById returns null', async () => {
+      await expect(service.deleteById('anyid')).rejects.toBeInstanceOf(NotFoundException);
+    })
+
+    it('should throw if findById throws', async () => {
+      jest.spyOn(repository, 'findById').mockRejectedValueOnce(new Error())
+
+      await expect(service.findById('anyid')).rejects.toThrow(new Error());
+    })
+
+    it('should call delete with correct value', async () => {
+      jest.spyOn(repository, 'findById').mockReturnValueOnce(Promise.resolve(mockPlayer));
+
+      const deleteSpy = jest.spyOn(repository, 'delete');
+
+      await service.deleteById('anyid');
+
+      expect(deleteSpy).toHaveBeenCalledWith('anyid');
+    })
+
+    it('should throw if delete throws', async () => {
+      jest.spyOn(repository, 'findById').mockReturnValueOnce(Promise.resolve(mockPlayer));
+
+      jest.spyOn(repository, 'delete').mockRejectedValueOnce(new Error())
+
+      await expect(service.deleteById('anyid')).rejects.toThrow(new Error());
     })
   })
 });
