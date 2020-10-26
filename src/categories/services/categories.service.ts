@@ -8,6 +8,10 @@ export class CategoriesService {
 
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
+  async findAll(): Promise<Category[]> {
+    return this.categoriesRepository.findAll();
+  }
+
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const findCategoryByName = await this.categoriesRepository.findByName(createCategoryDto.name);
 
