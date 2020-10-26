@@ -24,4 +24,8 @@ export class CategoriesRepository {
   async findAll(): Promise<Category[]> {
     return this.categoryModel.find();
   }
+
+  async findById(id: string): Promise<Category> {
+    return this.categoryModel.findById(id);
+  }
 }

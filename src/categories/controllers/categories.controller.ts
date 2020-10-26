@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Category } from '../models/category.schema';
 import { CategoriesService } from '../services/categories.service';
 
@@ -10,6 +10,11 @@ export class CategoriesController {
   @Get()
   async findAll(): Promise<Category[]> {
     return this.categoriesService.findAll();
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<Category> {
+    return this.categoriesService.findById(id);
   }
 
   @Post()
