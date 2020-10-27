@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
-import { Player } from "src/players/models/player.schema";
 
 export type CategoryDocument = Category & Document;
 
@@ -23,7 +22,7 @@ export class Category {
   events: Array<Event>
 
   @Prop({ type: Types.ObjectId , ref: 'Player' })
-  players: Array<Player>
+  players: Array<Types.ObjectId>
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

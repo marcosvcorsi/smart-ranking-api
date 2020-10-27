@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { CreateCategoryDto } from "../dtos/create-category.dto";
 import { UpdateCategoryDto } from "../dtos/update-category.dto";
 import { Category, CategoryDocument } from "../models/category.schema";
@@ -32,5 +32,17 @@ export class CategoriesRepository {
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<void> {
     return this.categoryModel.update({ _id: id}, {$set: updateCategoryDto})
+  }
+
+  async addPlayerToCategory(playerId: string, categoryId: string, category: Category): Promise<void> {
+    if(category.players) {
+      category.players.push(Types.ObjectId(playerId))
+    } else {
+      category.players = [
+        Types.ObjectId(playerId)
+      ]
+    }
+
+    await this.categoryModel.findOneAndUpdate({_id: categoryId}, {$set: category})
   }
 }
