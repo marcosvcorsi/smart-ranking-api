@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
+import { UpdateCategoryDto } from '../dtos/update-category.dto';
 import { Category } from '../models/category.schema';
 import { CategoriesRepository } from '../repositories/categories.repository';
 
@@ -30,5 +31,15 @@ export class CategoriesService {
     }
 
     return this.categoriesRepository.create(createCategoryDto);
+  }
+
+  async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<void> {
+    const category = await this.categoriesRepository.findById(id);
+
+    if(!category) {
+      throw new NotFoundException('Category not found');
+    }
+
+    return this.categoriesRepository.update(id, updateCategoryDto);
   }
 }

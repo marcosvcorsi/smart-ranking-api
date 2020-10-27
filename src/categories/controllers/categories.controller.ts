@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateCategoryDto } from '../dtos/create-category.dto';
+import { UpdateCategoryDto } from '../dtos/update-category.dto';
 import { Category } from '../models/category.schema';
 import { CategoriesService } from '../services/categories.service';
 
@@ -19,7 +21,12 @@ export class CategoriesController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  async create(@Body() createCategoryDto): Promise<Category> {
+  async create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(createCategoryDto);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, updateCategoryDto: UpdateCategoryDto): Promise<void> {
+    return this.categoriesService.update(id, updateCategoryDto);
   }
 }
