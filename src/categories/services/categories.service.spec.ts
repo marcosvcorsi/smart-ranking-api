@@ -1,6 +1,5 @@
-import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PlayersRepository } from '../../players/repositories/players.repository';
+import { PlayersService } from '../../players/services/players.service';
 import { CategoriesRepository } from '../repositories/categories.repository';
 import { CategoriesService } from './categories.service';
 
@@ -14,8 +13,7 @@ describe('CategoriesService', () => {
       providers: [
         CategoriesService, 
         { provide: CategoriesRepository, useValue: mockRepository}, 
-        { provide: PlayersRepository, useValue: {}},
-        { provide: getModelToken('Player'), useValue: {} }
+        { provide: PlayersService, useValue: {}},
       ],
     }).compile();
 

@@ -15,6 +15,7 @@ import { PlayersService } from './services/players.service';
     ])
   ],
   controllers: [PlayersController],
-  providers: [PlayersService, PlayersRepository]
+  providers: [PlayersService, PlayersRepository],
+  exports: [PlayersService]
 })
 export class PlayersModule {}

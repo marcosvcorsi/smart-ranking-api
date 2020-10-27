@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PlayersRepository } from '../../players/repositories/players.repository';
+import { PlayersService } from '../../players/services/players.service';
 import { AddCategoryPlayerDto } from '../dtos/add-category-player.dto';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { UpdateCategoryDto } from '../dtos/update-category.dto';
@@ -11,7 +11,7 @@ export class CategoriesService {
 
   constructor(
     private readonly categoriesRepository: CategoriesRepository,
-    private readonly playersRepository: PlayersRepository
+    private readonly playersService: PlayersService
   ) {}
 
   async findAll(): Promise<Category[]> {
@@ -57,11 +57,7 @@ export class CategoriesService {
       throw new NotFoundException('Category not found');
     }
 
-    const player = await this.playersRepository.findById(playerId);
-
-    if(!player) {
-      throw new NotFoundException('Player not found');
-    }
+    await this.playersService.findById(playerId);
 
     return this.categoriesRepository.addPlayerToCategory(playerId, categoryId, category);
   }
