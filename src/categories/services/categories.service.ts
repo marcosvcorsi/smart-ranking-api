@@ -59,6 +59,12 @@ export class CategoriesService {
 
     await this.playersService.findById(playerId);
 
+    const playerCategoryAlreadyExists = await this.categoriesRepository.findPlayerInCategory(categoryId, playerId);
+
+    if(playerCategoryAlreadyExists && playerCategoryAlreadyExists.length > 0) {
+      throw new BadRequestException('Player already associate in category');
+    }
+
     return this.categoriesRepository.addPlayerToCategory(playerId, categoryId, category);
   }
 }
