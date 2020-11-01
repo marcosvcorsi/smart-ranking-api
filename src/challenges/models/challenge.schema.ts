@@ -32,13 +32,13 @@ export class Challenge {
   category: string;
 
   @Prop({type: Types.ObjectId, ref: 'Player'})
-  challenger: Player;
+  challenger: Types.ObjectId;
 
   @Prop({type: Types.ObjectId, ref: 'Player'})
-  players: Array<Player>
+  players: Types.ObjectId[]
 
   @Prop({type: Types.ObjectId, ref: 'Match'})
-  match: Match;
+  match: Types.ObjectId;
 }
 
 export const ChallengeSchema = SchemaFactory.createForClass(Challenge);

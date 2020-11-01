@@ -19,14 +19,19 @@ export class ChallengesRepository {
     challenge.dateTimeRequest = new Date();
     challenge.category = category;
     challenge.status = StatusChallenge.WAITING
+    challenge.challenger = Types.ObjectId(createChallengeDto.challenger)
+    
+    challenge.players = [];
+
+    createChallengeDto.players.forEach(player => {
+      challenge.players.push(Types.ObjectId(player))
+    })
     
     await challenge.save()
   }
 
   async findAllByPlayerId(playerId: string): Promise<Challenge[]> {
-    return this.challengeModel.find()
-                              .where('players')
-                              .in([Types.ObjectId(playerId)])
+    return this.challengeModel.find({ players: Types.ObjectId(playerId) })
                               .populate('challenger')
                               .populate('players')
                               .populate('match')
