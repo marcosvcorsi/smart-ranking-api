@@ -18,22 +18,20 @@ export class ChallengesService {
     const players = await this.playersRepository.findAll();
 
     createChallengeDto.players.forEach(player => {
-      const { _id } = player;
-
-      const isValid = players.some(item => item._id === _id)
+      const isValid = players.some(item => String(item._id) === player)
 
       if(!isValid) {
-        throw new BadRequestException(`Id ${_id} is not a player`)
+        throw new BadRequestException(`Id ${player} is not a player`)
       }
     })
 
-    const challengerIsAPlayer = createChallengeDto.players.find(player => player._id === createChallengeDto.challenger._id)
+    const challengerIsAPlayer = createChallengeDto.players.find(player => player === createChallengeDto.challenger)
 
     if(!challengerIsAPlayer) {
       throw new BadRequestException('The challenge shoud be present in players list')
     }
 
-    const categoryPlayer = await this.categoriesRepository.findByPlayerId(createChallengeDto.challenger._id)
+    const categoryPlayer = await this.categoriesRepository.findByPlayerId(createChallengeDto.challenger)
 
     if(!categoryPlayer) {
       throw new BadRequestException('The challenger should have category')

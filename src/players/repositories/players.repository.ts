@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreatePlayerDto } from "../dtos/create-player.dto";
+import { PlayerDto } from "../dtos/player.dto";
 import { UpdatePlayerDto } from "../dtos/update-player.dto";
 import { Player, PlayerDocument } from "../models/player.schema";
 
@@ -10,7 +11,7 @@ export class PlayersRepository {
 
   constructor(@InjectModel(Player.name) private playerModel: Model<PlayerDocument>) {}
 
-  async findAll(): Promise<Player[]> {
+  async findAll(): Promise<PlayerDto[]> {
     return this.playerModel.find(); 
   }
 

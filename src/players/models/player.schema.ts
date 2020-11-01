@@ -6,9 +6,6 @@ export type PlayerDocument = Player & Document;
 @Schema()
 export class Player {
   @Prop()
-  _id: string;
-
-  @Prop()
   phoneNumber: string;
 
   @Prop({ unique: true })
