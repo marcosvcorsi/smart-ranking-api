@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PlayersRepository } from '../../players/repositories/players.repository';
 import { ChallengesRepository } from '../repositories/challenges.repository';
 import { ChallengesService } from './challenges.service';
 
@@ -13,6 +14,10 @@ describe('ChallengesService', () => {
         ChallengesService,
         {
           provide: ChallengesRepository,
+          useValue: mockRepository
+        },
+        {
+          provide: PlayersRepository,
           useValue: mockRepository
         }
       ],

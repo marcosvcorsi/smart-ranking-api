@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { CreateChallengeDto } from "../dtos/create-challenge.dto";
 import { Challenge, ChallengeDocument } from "../models/challenge.schema";
 import { Match, MatchDocument } from "../models/match.schema";
@@ -17,8 +17,10 @@ export class ChallengesRepository {
     return Promise.resolve()
   }
 
-  async findAll(): Promise<Challenge[]> {
+  async findAllByPlayerId(playerId: string): Promise<Challenge[]> {
     return this.challengeModel.find()
+                              .where('players')
+                              .in([Types.ObjectId(playerId)])
                               .populate('challenger')
                               .populate('players')
                               .populate('match')

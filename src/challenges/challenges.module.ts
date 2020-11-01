@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PlayersModule } from 'src/players/players.module';
 import { ChallengesController } from './controllers/challenges.controller';
 import { Challenge, ChallengeSchema } from './models/challenge.schema';
 import { Match, MatchSchema } from './models/match.schema';
@@ -17,7 +18,8 @@ import { ChallengesService } from './services/challenges.service';
         name: Match.name,
         schema: MatchSchema
       }
-    ])
+    ]),
+    PlayersModule
   ],
   controllers: [ChallengesController],
   providers: [ChallengesService, ChallengesRepository]
