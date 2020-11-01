@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
-import { Player } from 'src/players/models/player.schema';
-import { Result } from '../models/challenge.schema';
+import { Player } from '../../players/models/player.schema';
+import { Result } from '../models/match.schema';
 
 export class AddChallengeMatchDto {
 

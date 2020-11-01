@@ -1,12 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ChallengesRepository } from '../repositories/challenges.repository';
 import { ChallengesService } from './challenges.service';
 
 describe('ChallengesService', () => {
   let service: ChallengesService;
 
   beforeEach(async () => {
+    const mockRepository = {};
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChallengesService],
+      providers: [
+        ChallengesService,
+        {
+          provide: ChallengesRepository,
+          useValue: mockRepository
+        }
+      ],
     }).compile();
 
     service = module.get<ChallengesService>(ChallengesService);

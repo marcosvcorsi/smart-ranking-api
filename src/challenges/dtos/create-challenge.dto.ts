@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsArray, ArrayMinSize, ArrayMaxSize, IsDateString } from 'class-validator';
-import { Player } from 'src/players/models/player.schema';
+import { Player } from '../../players/models/player.schema';
 
 export class CreateChallengeDto {
   
