@@ -46,6 +46,10 @@ export class CategoriesRepository {
     await this.categoryModel.findOneAndUpdate({_id: categoryId}, {$set: category})
   }
 
+  async findByPlayerId(playerId: string): Promise<Category> {
+    return this.categoryModel.findOne().where('players').in([playerId]);
+  }
+
   async findPlayerInCategory(categoryId: string, playerId: string): Promise<Category[]> {
     return this.categoryModel.find({_id: categoryId, players: {$in: [ Types.ObjectId(playerId)]}})
   }

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
 import { CreateChallengeDto } from "../dtos/create-challenge.dto";
-import { Challenge, ChallengeDocument } from "../models/challenge.schema";
+import { Challenge, ChallengeDocument, StatusChallenge } from "../models/challenge.schema";
 import { Match, MatchDocument } from "../models/match.schema";
 
 @Injectable()
@@ -13,8 +13,14 @@ export class ChallengesRepository {
     @InjectModel(Match.name) private readonly matchModel: Model<MatchDocument>
   ) {}
 
-  async create(createChallengeDto: CreateChallengeDto): Promise<void> {
-    return Promise.resolve()
+  async create(createChallengeDto: CreateChallengeDto, category: string): Promise<void> {
+    const challenge = new this.challengeModel(createChallengeDto);
+    
+    challenge.dateTimeRequest = new Date();
+    challenge.category = category;
+    challenge.status = StatusChallenge.WAITING
+    
+    await challenge.save()
   }
 
   async findAllByPlayerId(playerId: string): Promise<Challenge[]> {

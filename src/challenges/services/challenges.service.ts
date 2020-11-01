@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { CategoriesRepository } from '../../categories/repositories/categories.repository';
 import { PlayersRepository } from '../../players/repositories/players.repository';
 import { CreateChallengeDto } from '../dtos/create-challenge.dto';
 import { Challenge } from '../models/challenge.schema';
@@ -9,11 +10,36 @@ export class ChallengesService {
 
   constructor(
     private readonly challengesRepository: ChallengesRepository,
-    private readonly playersRepository: PlayersRepository
+    private readonly playersRepository: PlayersRepository,
+    private readonly categoriesRepository: CategoriesRepository
   ) {}
 
   async create(createChallengeDto: CreateChallengeDto): Promise<void> {
-    return this.challengesRepository.create(createChallengeDto);
+    const players = await this.playersRepository.findAll();
+
+    createChallengeDto.players.forEach(player => {
+      const { _id } = player;
+
+      const isValid = players.some(item => item._id === _id)
+
+      if(!isValid) {
+        throw new BadRequestException(`Id ${_id} is not a player`)
+      }
+    })
+
+    const challengerIsAPlayer = createChallengeDto.players.find(player => player._id === createChallengeDto.challenger._id)
+
+    if(!challengerIsAPlayer) {
+      throw new BadRequestException('The challenge shoud be present in players list')
+    }
+
+    const categoryPlayer = await this.categoriesRepository.findByPlayerId(createChallengeDto.challenger._id)
+
+    if(!categoryPlayer) {
+      throw new BadRequestException('The challenger should have category')
+    }
+
+    return this.challengesRepository.create(createChallengeDto, categoryPlayer.name);
   }
 
   async findAllByPlayerId(playerId: string): Promise<Challenge[]> {
