@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional } from 'class-validator';
 import { StatusChallenge } from '../models/challenge.schema';
 
 export class UpdateChallengeDto {
@@ -8,5 +8,6 @@ export class UpdateChallengeDto {
   dateTimeChallenge: Date;
 
   @IsOptional()
+  @IsEnum(StatusChallenge)
   status: StatusChallenge;
 }
