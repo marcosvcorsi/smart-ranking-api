@@ -33,6 +33,6 @@ export class ChallengesController {
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
-    return Promise.resolve();
+    return this.challengesService.delete(id);
   }
 }

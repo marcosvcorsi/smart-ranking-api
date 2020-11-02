@@ -3,7 +3,7 @@ import { CategoriesRepository } from '../../categories/repositories/categories.r
 import { PlayersRepository } from '../../players/repositories/players.repository';
 import { CreateChallengeDto } from '../dtos/create-challenge.dto';
 import { UpdateChallengeDto } from '../dtos/update-challenge.dto';
-import { Challenge } from '../models/challenge.schema';
+import { Challenge, StatusChallenge } from '../models/challenge.schema';
 import { ChallengesRepository } from '../repositories/challenges.repository';
 
 @Injectable()
@@ -66,5 +66,17 @@ export class ChallengesService {
     challenge.dateTimeChallenge = updateChallengeDto.dateTimeChallenge;
 
     return this.challengesRepository.update(id, challenge);
+  }
+
+  async delete(id: string): Promise<void> {
+    const challenge = await this.challengesRepository.findById(id);
+
+    if(!challenge) {
+      throw new NotFoundException('Challenge not found');
+    }
+
+    challenge.status = StatusChallenge.CANCEL;
+
+    await this.challengesRepository.update(id, challenge);
   }
 }
