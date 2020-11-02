@@ -68,7 +68,11 @@ export class ChallengesService {
     }
   }
 
-  async findAllByPlayerId(playerId: string): Promise<Challenge[]> {
+  async findAll(playerId: string): Promise<Challenge[]> {
+    if(!playerId) {
+      return this.challengesRepository.findAll();
+    }
+
     const player = await this.playersRepository.findById(playerId);
 
     if(!player) {

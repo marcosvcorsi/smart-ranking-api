@@ -12,7 +12,7 @@ export class ChallengesController {
 
   @Get()
   async findAll(@Query('player') id: string): Promise<Challenge[]> {
-    return this.challengesService.findAllByPlayerId(id);
+    return this.challengesService.findAll(id);
   }
 
   @Post()

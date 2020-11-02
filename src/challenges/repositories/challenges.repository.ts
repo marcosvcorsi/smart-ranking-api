@@ -28,6 +28,13 @@ export class ChallengesRepository {
     await challenge.save()
   }
 
+  async findAll(): Promise<Challenge[]> {
+    return this.challengeModel.find()
+                              .populate('challenger')
+                              .populate('players')
+                              .populate('match')
+  }
+
   async findAllByPlayerId(playerId: string): Promise<Challenge[]> {
     return this.challengeModel.find({ players: Types.ObjectId(playerId) })
                               .populate('challenger')
