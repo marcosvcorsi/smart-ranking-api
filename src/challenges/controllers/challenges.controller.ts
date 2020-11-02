@@ -28,7 +28,7 @@ export class ChallengesController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateChallengeDto: UpdateChallengeDto): Promise<void> {
-    return Promise.resolve();
+    return this.challengesService.update(id, updateChallengeDto);
   }
 
   @Delete(':id')

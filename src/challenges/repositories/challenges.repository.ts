@@ -36,4 +36,12 @@ export class ChallengesRepository {
                               .populate('players')
                               .populate('match')
   }
+
+  async findById(id: string): Promise<Challenge> {
+    return this.challengeModel.findById(id);
+  }
+
+  async update(id: string, challenge: Challenge): Promise<void> {
+    await this.challengeModel.update({_id: id}, {$set: challenge})
+  }
 }

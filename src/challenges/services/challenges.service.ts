@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CategoriesRepository } from '../../categories/repositories/categories.repository';
 import { PlayersRepository } from '../../players/repositories/players.repository';
 import { CreateChallengeDto } from '../dtos/create-challenge.dto';
+import { UpdateChallengeDto } from '../dtos/update-challenge.dto';
 import { Challenge } from '../models/challenge.schema';
 import { ChallengesRepository } from '../repositories/challenges.repository';
 
@@ -48,5 +49,22 @@ export class ChallengesService {
     }
 
     return this.challengesRepository.findAllByPlayerId(playerId);
+  }
+
+  async update(id: string, updateChallengeDto: UpdateChallengeDto): Promise<void> {
+    const challenge = await this.challengesRepository.findById(id);
+
+    if(!challenge) {
+      throw new NotFoundException('Challenge not found')
+    }
+
+    if(updateChallengeDto.status) {
+      challenge.dateTimeAnswer = new Date()
+    }
+
+    challenge.status = updateChallengeDto.status;
+    challenge.dateTimeChallenge = updateChallengeDto.dateTimeChallenge;
+
+    return this.challengesRepository.update(id, challenge);
   }
 }
