@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CategoriesRepository } from '../../categories/repositories/categories.repository';
 import { PlayersRepository } from '../../players/repositories/players.repository';
+import { AddChallengeMatchDto } from '../dtos/add-challenge-match.dto';
 import { CreateChallengeDto } from '../dtos/create-challenge.dto';
 import { UpdateChallengeDto } from '../dtos/update-challenge.dto';
 import { Challenge, StatusChallenge } from '../models/challenge.schema';
 import { ChallengesRepository } from '../repositories/challenges.repository';
+import { MatchesRepository } from '../repositories/matches.repository';
 
 @Injectable()
 export class ChallengesService {
@@ -12,7 +14,8 @@ export class ChallengesService {
   constructor(
     private readonly challengesRepository: ChallengesRepository,
     private readonly playersRepository: PlayersRepository,
-    private readonly categoriesRepository: CategoriesRepository
+    private readonly categoriesRepository: CategoriesRepository,
+    private readonly matchesRepository: MatchesRepository
   ) {}
 
   async create(createChallengeDto: CreateChallengeDto): Promise<void> {
@@ -39,6 +42,30 @@ export class ChallengesService {
     }
 
     return this.challengesRepository.create(createChallengeDto, categoryPlayer.name);
+  }
+
+  async addChallengeMatch(id: string, addChallengeMatchDto: AddChallengeMatchDto): Promise<void> {
+    const challenge = await this.challengesRepository.findById(id);
+
+    if(!challenge) {
+      throw new NotFoundException('Challenge not found');
+    }
+
+    const playerExists = challenge.players.some(player => String(player) === addChallengeMatchDto.def)
+
+    if(!playerExists) {
+      throw new BadRequestException('Winner is not a player for this challenge');
+    }
+
+    const matchId = await this.matchesRepository.create(addChallengeMatchDto, challenge);
+
+    challenge.match = matchId;
+
+    try {
+      await this.challengesRepository.update(id, challenge);
+    } catch (err) {
+      await this.matchesRepository.delete(String(matchId));
+    }
   }
 
   async findAllByPlayerId(playerId: string): Promise<Challenge[]> {

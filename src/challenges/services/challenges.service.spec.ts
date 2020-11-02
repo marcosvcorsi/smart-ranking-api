@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesRepository } from '../../categories/repositories/categories.repository';
 import { PlayersRepository } from '../../players/repositories/players.repository';
 import { ChallengesRepository } from '../repositories/challenges.repository';
+import { MatchesRepository } from '../repositories/matches.repository';
 import { ChallengesService } from './challenges.service';
 
 describe('ChallengesService', () => {
@@ -23,6 +24,10 @@ describe('ChallengesService', () => {
         },
         {
           provide: CategoriesRepository,
+          useValue: mockRepository
+        },
+        {
+          provide: MatchesRepository,
           useValue: mockRepository
         }
       ],

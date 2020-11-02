@@ -22,8 +22,8 @@ export class ChallengesController {
   }
 
   @Post(':id/match')
-  async addMatch(@Param('challenge') id: string, @Body() addChallengeMatchDto: AddChallengeMatchDto): Promise<void> {
-    return Promise.resolve()
+  async addMatch(@Param('id') id: string, @Body() addChallengeMatchDto: AddChallengeMatchDto): Promise<void> {
+    return this.challengesService.addChallengeMatch(id, addChallengeMatchDto)
   }
 
   @Put(':id')

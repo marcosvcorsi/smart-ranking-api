@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
-import { Player } from "../../players/models/player.schema";
 
 export type Result = {
   set: string;
@@ -15,10 +14,10 @@ export class Match {
   category: string;
 
   @Prop({type: Types.ObjectId, ref: 'Player'})
-  players: Array<Player>
+  players: Array<Types.ObjectId>
 
   @Prop({type: Types.ObjectId, ref: 'Player'})
-  def: Player;
+  def: Types.ObjectId;
 
   @Prop({set: String})
   results: Array<Result>

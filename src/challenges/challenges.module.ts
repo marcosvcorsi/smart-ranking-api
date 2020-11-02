@@ -6,6 +6,7 @@ import { ChallengesController } from './controllers/challenges.controller';
 import { Challenge, ChallengeSchema } from './models/challenge.schema';
 import { Match, MatchSchema } from './models/match.schema';
 import { ChallengesRepository } from './repositories/challenges.repository';
+import { MatchesRepository } from './repositories/matches.repository';
 import { ChallengesService } from './services/challenges.service';
 
 @Module({
@@ -24,6 +25,6 @@ import { ChallengesService } from './services/challenges.service';
     CategoriesModule
   ],
   controllers: [ChallengesController],
-  providers: [ChallengesService, ChallengesRepository]
+  providers: [ChallengesService, ChallengesRepository, MatchesRepository]
 })
 export class ChallengesModule {}
